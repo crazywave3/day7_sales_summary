@@ -81,9 +81,10 @@ td.col-subtotal { background: white; }
 .mbtn { padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 12px; background: white; color: #555; font-family: inherit; }
 .mbtn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
 
-.chart-toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
-.toggle-btns { display: flex; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
-.toggle-btn { padding: 7px 16px; font-size: 13px; cursor: pointer; background: white; color: #555; border: none; font-family: inherit; }
+.chart-toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap; padding-bottom: 4px; }
+.chart-toolbar::-webkit-scrollbar { display: none; }
+.toggle-btns { display: flex; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+.toggle-btn { padding: 7px 16px; font-size: 13px; cursor: pointer; background: white; color: #555; border: none; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
 .toggle-btn.active { background: #1a1a2e; color: white; }
 .chart-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .chart-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
@@ -173,7 +174,7 @@ tr:hover td.col-monthtotal { background: #f8f9ff !important; }
   <div class="header-right">
     <div id="upload-inline-msg" class="upload-inline-msg"></div>
     <div class="last-update" id="last-update"></div>
-    <div class="last-update" style="color:#aaa;">v3.1</div>
+    <div class="last-update" style="color:#aaa;">v3.3</div>
     <button class="undo-btn" id="undo-btn" onclick="undoUpload()">↩ 업로드 취소</button>
   </div>
 </div>
@@ -676,6 +677,20 @@ const PRODUCTS = [
   }
 ];
 const DAILY_RAW = {
+  "2026-05-07": {
+    "DCAB02A-240": 1,
+    "DCAB03A-240": 1,
+    "DYAAA08-020": 1,
+    "DYCBA02-030": 1,
+    "DYCBA02-050": 1,
+    "DYEBB01-055": 1,
+    "DYEBC01-055": 1,
+    "DYGAD15-300": 1,
+    "DYGAE15-115": 1,
+    "DYGEA16-050": 1,
+    "DYGEA18-110": 1,
+    "DYGEB34-260": 4
+  },
   "2026-05-06": {
     "DCAB01A-180": 1,
     "DDAA180A": 2,
@@ -687,7 +702,7 @@ const DAILY_RAW = {
     "DYABA09-090": 1,
     "DYABS08-004": 3,
     "DYCBA02-015": 2,
-    "DYCBA02-030": 3,
+    "DYCBA02-030": 2,
     "DYCBA02-050": 6,
     "DYCBA02-070": 1,
     "DYGAA31-006": 3,
