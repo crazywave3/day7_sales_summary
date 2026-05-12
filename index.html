@@ -139,13 +139,13 @@ td.col-subtotal { background: white; }
 
 /* 품목별 검색 */
 .chart-search { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
-.chart-search input { flex: 1; max-width: 300px; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; font-family: inherit; }
-.chart-search input:focus { border-color: #4a90e2; }
-.chart-search button { padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; }
-.chart-search button:first-of-type { background: #1a1a2e; color: white; }
-.chart-search button:first-of-type:hover { background: #2a2a4e; }
-#chart-search-clear { background: #f0f0f0; color: #555; }
-#chart-search-clear:hover { background: #e0e0e0; }
+.chart-search-wrap { position: relative; flex: 1; max-width: 300px; }
+.chart-search-wrap input { width: 100%; padding: 8px 32px 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; font-family: inherit; }
+.chart-search-wrap input:focus { border-color: #4a90e2; }
+.chart-search-x { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #aaa; font-size: 16px; display: none; padding: 0; line-height: 1; }
+.chart-search-x:hover { color: #555; }
+.chart-search button.search-btn { padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; background: #1a1a2e; color: white; white-space: nowrap; }
+.chart-search button.search-btn:hover { background: #2a2a4e; }
 .monthly-bar-chart { background: white; border-radius: 10px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px; }
 .monthly-bar-chart h3 { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
 .mbc-cols { display: flex; align-items: flex-end; gap: 6px; height: 200px; border-bottom: 2px solid #e0e0e0; padding-bottom: 0; }
@@ -209,9 +209,11 @@ tr:hover td.col-monthtotal { background: #f8f9ff !important; }
       <select id="chart-period" onchange="renderChart()"></select>
     </div>
     <div class="chart-search">
-      <input type="text" id="chart-search-input" placeholder="품목명 검색 (2글자 이상)..." onkeydown="if(event.key==='Enter') searchChart()">
-      <button onclick="searchChart()">검색</button>
-      <button onclick="clearSearch()" id="chart-search-clear" style="display:none;">✕ 초기화</button>
+      <div class="chart-search-wrap">
+        <input type="text" id="chart-search-input" placeholder="품목명 검색..." oninput="onSearchInput()" onkeydown="if(event.key==='Enter') searchChart()">
+        <button class="chart-search-x" id="chart-search-x" onclick="clearSearch()">✕</button>
+      </div>
+      <button class="search-btn" onclick="searchChart()">검색</button>
     </div>
     <div class="chart-container" id="chart-container"></div>
   </div>
@@ -2117,17 +2119,24 @@ function initSummary(){
 }
 
 let chartSearchQuery = '';
+function onSearchInput(){
+  const val = document.getElementById('chart-search-input').value;
+  document.getElementById('chart-search-x').style.display = val ? 'block' : 'none';
+  if(val === '') {
+    chartSearchQuery = '';
+    renderChart();
+  }
+}
 function searchChart(){
   const q = document.getElementById('chart-search-input').value.trim();
-  if(q.length < 2){ alert('2글자 이상 입력해 주세요.'); return; }
+  if(q.length > 0 && q.length < 2){ alert('2글자 이상 입력해 주세요.'); return; }
   chartSearchQuery = q;
-  document.getElementById('chart-search-clear').style.display = 'inline-block';
   renderChart();
 }
 function clearSearch(){
   chartSearchQuery = '';
   document.getElementById('chart-search-input').value = '';
-  document.getElementById('chart-search-clear').style.display = 'none';
+  document.getElementById('chart-search-x').style.display = 'none';
   renderChart();
 }
 
